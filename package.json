@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/Saidou25/Employee--Tracker#readme",
   "dependencies": {
+    "console": "^0.7.2",
     "express": "^4.18.2",
-    "mysql2": "^3.0.0"
+    "inquirer": "^8.2.4",
+    "mysql2": "^3.0.0",
+    "table": "^6.8.1"
   }
 }
