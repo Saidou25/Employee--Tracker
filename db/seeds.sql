@@ -23,5 +23,4 @@ USE employee_db;
              ('Kunal', 'Sigh', 3),
              ('Nalia', 'Brown', 4),
               ('Lara', 'Lourd', 5),
-              ('Tom', 'Allen', 6),
-             ('Felicia', 'Grant', 5);
+              ('Tom', 'Allen', 6);

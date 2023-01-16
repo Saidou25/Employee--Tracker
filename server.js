@@ -19,3 +19,4 @@ db.query('SELECT * FROM roles', (err, roles) => {
 db.query('SELECT * FROM employees', (err, employees) => {
     console.table(employees);
 });
+
