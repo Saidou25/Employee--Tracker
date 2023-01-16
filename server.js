@@ -29,18 +29,19 @@ const viewTables = () => {
     )
         .then((answer) => {
             showTables(answer);
-            
+
         })
         .catch(err => console.log(err));
 };
 
 const showTables = (answer) => {
     const showTable = 'SELECT * FROM ' + answer.question;
-    db.query(showTable, (err, showTable) => { 
-        console.table(showTable);      
+    db.query(showTable, (err, showTable) => {
+        console.table(showTable);
     });
 }
 
+viewTables();
 // WHEN I start the application
 // THEN I am presented with the following options:
 
@@ -69,4 +70,3 @@ const showTables = (answer) => {
 
 
 
-viewTables();
