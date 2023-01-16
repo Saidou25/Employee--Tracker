@@ -25,14 +25,14 @@ CREATE TABLE roles (
  id INT NOT NULL AUTO_INCREMENT,
  first_name VARCHAR(30) NOT NULL,
  last_name VARCHAR(30) NOT NULL,
-  /* department_id INT,   */
+ department_id INT,  
  role_id INT,
-  PRIMARY KEY (id),
- /* FOREIGN KEY (department_id) REFERENCES departments(id), */
-  FOREIGN KEY (role_id) REFERENCES roles(id)
+ PRIMARY KEY (id),
+ manager_id INT,
+ FOREIGN KEY (department_id) REFERENCES departments(id),
+ FOREIGN KEY (role_id) REFERENCES roles(id)
 /*ON DELETE SET NULL*/
  );
-/* manage_id INT, */
 
 
 
