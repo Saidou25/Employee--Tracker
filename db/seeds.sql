@@ -16,11 +16,11 @@ USE employee_db;
          ('Legal' 'Team Lead', 250000, 3),
           ('Lawyer', 190000, 3);
 
-            INSERT INTO employees (first_name, last_name, role_id)
+            INSERT INTO employees (first_name, last_name, role_id, manager_id)
         VALUES
-             ('Ashley', 'Rodriguez', 1),
-             ('Kevin', 'Tupik', 2),
-             ('Kunal', 'Sigh', 3),
-             ('Nalia', 'Brown', 4),
-              ('Lara', 'Lourd', 5),
-              ('Tom', 'Allen', 6);
+             ('Ashley', 'Rodriguez', 3, 2),
+             ('Kevin', 'Tupik', 2, 4),
+             ('Kunal', 'Sigh', 3, null),
+             ('Nalia', 'Brown', 4, 5),
+              ('Lara', 'Lourd', 5, 4),
+              ('Tom', 'Allen', 6, 6);
