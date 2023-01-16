@@ -4,37 +4,42 @@ const mysql = require('mysql2');
 require('console.table');
 
 const db = mysql.createConnection({
-     user: "root",
-     database: "employee_db",
+    user: "root",
+    database: "employee_db",
 });
 
-db.query('SELECT * FROM departments', (err, departments) => {
-    console.table(departments);
-});
-
-db.query('SELECT * FROM roles', (err, roles) => {
-    console.table(roles);
-});
-
-db.query('SELECT * FROM employees', (err, employees) => {
-    console.table(employees);
-});
+// db.query('SELECT * FROM departments', (err, departments) => {
+//     console.table(departments);
+// });
 
 // WHEN I start the application
 // THEN I am presented with the following options:
 
 // view all departments
-db.query('SELECT * FROM departments', (err, departments) => {
-    console.table(departments);
-});
 // view all roles
-db.query('SELECT * FROM roles', (err, roles) => {
-    console.table(roles);
-});
 // view all employees
-db.query('SELECT * FROM employees', (err, employees) => {
-    console.table(employees);
-});
+const viewTables = () => {
+    prompt(
+        {
+            type: 'rawlist',
+            message: 'Wich list would you like to see ?',
+            name: 'question',
+            choices: ['departments', 'roles', 'employees'],
+        },
+    )
+        .then((answer) => {
+            showTables(answer);
+            
+        })
+        .catch(err => console.log(err));
+};
+
+const showTables = (answer) => {
+    const showTable = 'SELECT * FROM ' + answer.question;
+    db.query(showTable, (err, showTable) => { 
+        console.table(showTable);      
+    });
+}
 
 // WHEN I start the application
 // THEN I am presented with the following options:
@@ -42,3 +47,26 @@ db.query('SELECT * FROM employees', (err, employees) => {
 // add a department
 //  add a role
 //   add an employee
+
+// const addSomething = () => {
+
+//     prompt(
+//         {
+//             type: 'rawlist',
+//             message: 'Would you like to add?',
+//             name: 'question',
+//             choices: ['departments', 'roles', 'employees'],
+//         },
+//     )
+//         .then((answer) => {
+//             showTables(answer);
+//             return (answer);
+//         })
+//         .catch(err => console.log(err));
+
+// };
+
+
+
+
+viewTables();
