@@ -1,13 +1,13 @@
 USE employee_db;
         
 
-        INSERT INTO departments (name)
+        INSERT INTO viewDepartments (name)
         VALUES
         ('Engineering'),
         ('Finance'),
         ('Legal');
 
-        INSERT INTO roles (title, salary, department_id)
+        INSERT INTO roles (title, salary, viewDepartment_id)
         VALUES
          ('Lead Engineering', 150000, 1),
          ('Software Engineer', 120000, 1),

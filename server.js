@@ -6,6 +6,7 @@ require('console.table');
 const db = mysql.createConnection({
     user: "root",
     database: "employee_db",
+  
 });
 
 // db.query('SELECT * FROM departments', (err, departments) => {
@@ -21,21 +22,21 @@ const db = mysql.createConnection({
 const viewTables = () => {
     prompt(
         {
-            type: 'rawlist',
+            type: 'list',
             message: 'Wich list would you like to see ?',
             name: 'question',
-            choices: ['departments', 'roles', 'employees'],
+            choices: ['Departments', 'Roles', 'Employees'],
         },
     )
         .then((answer) => {
             showTables(answer);
-
         })
         .catch(err => console.log(err));
 };
 
 const showTables = (answer) => {
-    const showTable = 'SELECT * FROM ' + answer.question;
+    const showTable = 'SELECT * FROM ' + 'view' + answer.question;
+    console.log(showTable);
     db.query(showTable, (err, showTable) => {
         console.table(showTable);
     });
