@@ -13,7 +13,7 @@ CREATE TABLE viewDepartments (
 CREATE TABLE roles (
      id INT NOT NULL AUTO_INCREMENT,
      title VARCHAR(30) NOT NULL,
-     viewDepartment_id INT, /* not null isn't here so we can do associations with other tables later on*/
+     viewDepartment_id INT, 
      salary DECIMAL NOT NULL,
      PRIMARY KEY(id),
     FOREIGN KEY (viewDepartment_id) REFERENCES viewDepartments(id)

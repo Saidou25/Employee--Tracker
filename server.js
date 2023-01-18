@@ -16,119 +16,115 @@ const init = () => {
             message: 'What would you like to do ?',
             name: 'init',
             choices: ['View all Departments', 'View all Roles', 'View all Employees',
-             'Add a Department',' Add a Role', 'Add an Employee', 'Update an Employee Role'],
+                'Add a Department', ' Add a Role', 'Add an Employee', 'Update an Employee Role'],
         },
     )
         .then((answer) => {
-            if  (answer.init.includes('Departments')) { 
+            if (answer.init.includes('Departments')) {
                 let result = 'Departments';
                 showTables(result);
+
             }
-               else if  (answer.init.includes('Roles')) { 
+            else if (answer.init.includes('Roles')) {
                 let result = 'Roles';
                 showTables(result);
+
             }
-              else if  (answer.init.includes('Employees')) { 
+            else if (answer.init.includes('Employees')) {
                 let result = 'Employees';
                 showTables(result);
-            };
 
-        })
-        .then((answer) => {
-            if  (answer.init.includes('Add a Department')) { 
-                let result = 'Departments';
-                showTables('great');
             }
+            else if ((answer.init === 'Add a Department')) {
+                let result = 'viewDepartments';
+                addDepartment(result);
+            }
+            else if ((answer.init === 'Add a Role')) {
+                let result = 'Add a Role';
+                addRole(result);
+            }
+
         })
         .catch(err => console.log(err));
 };
 
-init();
-
 const showTables = (result) => {
     const showTable = 'SELECT * FROM ' + 'view' + result;
     db.query(showTable, (err, showTable) => {
-        console.table(showTable);      
+        console.table(showTable);
+        init();
     });
-}
+};
 
-//         .then((answer) => {
-//             const toAdd = 'view' + answer.question;
-//             db.query('INSERT INTO ?? SET ?', [viewDepartments, name],(err) => {
-//                 if (err) return console.error(err);
-//              console.table('sucess');     
-//             })
-//             .catch (err => console.log(err));
-//         })
-//     }
+const addRole = (result) => {
+    console.log(result);
+    prompt([
+        {
+            type: 'input',
+            message: 'What is the title of the role you would like to add ?',
+            name: 'title',
+        },
+        {
+            type: 'input',
+            message: 'What is the salary for that title ?',
+            name: 'salary',
+        },
+        {
+            type: 'list',
+            message: 'What is the Department that role belongs to ?',
+            choices: ['Finance', 'Engineering', 'Legal'],
+            name: 'department',
+        },
+
+    ])
+        .then((data) => {
+            console.log(data.title);
+            console.log(data.salary);
+            console.log(data.department);
+
+            // const add = "INSERT INTO viewEmployees (first_name, last_name) VALUES (?,?)";
+            const view = db.query(`SELECT * FROM roles WHERE title = ${data.title}`, (err, datam) => {
+                if (err) {
+                    console.log('error');
+                } else {
+                    console.log(view);
+                }
+            })
+            init();
+        })
+    // //         .catch(err => console.log(err));
+};
+
+const addDepartment = (result) => {
+    console.log(result);
+    prompt(
+        {
+            type: 'input',
+            message: 'What is the name of the Department you would like to add ?',
+            name: 'department',
+        },
+    )
+        .then((data) => {
+            console.log(data.department);
+            const val = data.department;
+
+            const add = "INSERT INTO viewDepartments (name) VALUES (?)";
+            db.query(add, [val], (err, data) => {
+                if (err) {
+                    console.log('error');
+                } else {
+                    console.log('sucess');
+                }
+            })
+            init();
+        })
+        .catch(err => console.log(err));
+};
 
 
 
-// db.query('SELECT * FROM departments', (err, departments) => {
-//     console.table(departments);
-// });
-// .then((answer) => {
-//     const toAdd = 'view' + answer.question;
-//     db.query('INSERT INTO ?? SET ?', [viewDepartments, name](err) => {
-//      console.table(showTable);
 
-     
 
-// view all departments
-// view all roles
-// view all employees
-// add a department
-//  add a role
-//   add an employee
-// update an employee role
 
-// prompt([
-//     {
-//         type: 'rawlist',
-//         message: 'Would you like to add a new',
-//         name: 'all departments',
-//         choices: ['Department ?', 'Role ?', 'Employee ?'],
-//     },
-//     {
-//         type: 'rawlist',
-//         message: 'Enter the name of?',
-//         name: 'all roles',
-//         choices: ['New department', 'New role', 'New employee'],
-//     },
-//     {
-//         type: 'rawlist',
-//         message: 'Would you like to add a new',
-//         name: 'all departments',
-//         choices: ['Department ?', 'Role ?', 'Employee ?'],
-//     },
-//     {
-//         type: 'rawlist',
-//         message: 'Enter the name of?',
-//         name: 'all roles',
-//         choices: ['New department', 'New role', 'New employee'],
-//     },
-//     {
-//         type: 'rawlist',
-//         message: 'Would you like to add a new',
-//         name: 'all departments',
-//         choices: ['Department ?', 'Role ?', 'Employee ?'],
-//     },
-//     {
-//         type: 'rawlist',
-//         message: 'Enter the name of?',
-//         name: 'all roles',
-//         choices: ['New department', 'New role', 'New employee'],
-//     },
-//     {
-//         type: 'rawlist',
-//         message: 'Would you like to add a new',
-//         name: 'all departments',
-//         choices: ['Department ?', 'Role ?', 'Employee ?'],
-//     },
-//     {
-//         type: 'rawlist',
-//         message: 'Enter the name of?',
-//         name: 'all roles',
-//         choices: ['New department', 'New role', 'New employee'],
-//     },
-// ])
+
+
