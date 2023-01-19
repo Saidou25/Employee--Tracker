@@ -9,6 +9,8 @@ const db = mysql.createConnection({
 
 });
 
+
+
 const init = () => {
     prompt(
         {
@@ -16,7 +18,7 @@ const init = () => {
             message: 'What would you like to do ?',
             name: 'init',
             choices: ['View all Departments', 'View all Roles', 'View all Employees',
-                'Add a Department', ' Add a Role', 'Add an Employee', 'Update an Employee Role'],
+                'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role'],
         },
     )
         .then((answer) => {
@@ -35,13 +37,12 @@ const init = () => {
                 showTables(result);
 
             }
-            else if ((answer.init === 'Add a Department')) {
+            else if (answer.init === 'Add a Department') {
                 let result = 'viewDepartments';
                 addDepartment(result);
             }
-            else if ((answer.init === 'Add a Role')) {
-                let result = 'Add a Role';
-                addRole(result);
+            else if (answer.init === 'Add a Role') {              
+                addRole();
             }
 
         })
@@ -56,11 +57,42 @@ const showTables = (result) => {
     });
 };
 
+let depChoices = [];
+
+const addDepartment = (result) => {
+  
+    prompt(
+        {
+            type: 'input',
+            message: 'What is the name of the Department you would like to add ?',
+            name: 'department',
+        },
+    )
+        .then((data) => {
+            
+            const newDpartment = data.department;
+             const addD = depChoices.push(newDpartment);
+            
+            db.query("INSERT INTO viewDepartments (name) VALUES (?)", [newDpartment], (err, data) => {
+                if (err) {
+                    console.log('error');
+                } else {      
+                    
+                    console.log(`A new Department '${newDpartment}' was successfully created.`);                 
+                 
+                }
+            })
+            init();
+        })
+        .catch(err => console.log(err));
+};
+
 const addRole = (result) => {
-    console.log(result);
+   
     prompt([
         {
             type: 'input',
+
             message: 'What is the title of the role you would like to add ?',
             name: 'title',
         },
@@ -78,52 +110,20 @@ const addRole = (result) => {
 
     ])
         .then((data) => {
-            console.log(data.title);
-            console.log(data.salary);
-            console.log(data.department);
+         
+            db.query(`INSERT INTO roles (title, salary, viewDepartment_id) VALUES ('${data.title}', '${data.salary}', 
+            (SELECT id FROM viewDepartments WHERE name = '${data.department}'))`, (err) => {
 
-            // const add = "INSERT INTO viewEmployees (first_name, last_name) VALUES (?,?)";
-            const view = db.query(`SELECT * FROM roles WHERE title = ${data.title}`, (err, datam) => {
                 if (err) {
                     console.log('error');
-                } else {
-                    console.log(view);
-                }
+                } 
+                init();
             })
-            init();
+
         })
-    // //         .catch(err => console.log(err));
 };
 
-const addDepartment = (result) => {
-    console.log(result);
-    prompt(
-        {
-            type: 'input',
-            message: 'What is the name of the Department you would like to add ?',
-            name: 'department',
-        },
-    )
-        .then((data) => {
-            console.log(data.department);
-            const val = data.department;
-
-            const add = "INSERT INTO viewDepartments (name) VALUES (?)";
-            db.query(add, [val], (err, data) => {
-                if (err) {
-                    console.log('error');
-                } else {
-                    console.log('sucess');
-                }
-            })
-            init();
-        })
-        .catch(err => console.log(err));
-};
-
-
-
-
+init();
 
 
 
