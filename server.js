@@ -9,8 +9,6 @@ const db = mysql.createConnection({
 
 });
 
-
-
 const init = () => {
     prompt(
         {
@@ -41,7 +39,7 @@ const init = () => {
                 let result = 'viewDepartments';
                 addDepartment(result);
             }
-            else if (answer.init === 'Add a Role') {              
+            else if (answer.init === 'Add a Role') {
                 addRole();
             }
 
@@ -60,7 +58,7 @@ const showTables = (result) => {
 let depChoices = [];
 
 const addDepartment = (result) => {
-  
+
     prompt(
         {
             type: 'input',
@@ -69,26 +67,24 @@ const addDepartment = (result) => {
         },
     )
         .then((data) => {
-            
+
             const newDpartment = data.department;
-             const addD = depChoices.push(newDpartment);
-            
+            const addD = depChoices.push(newDpartment);
+
             db.query("INSERT INTO viewDepartments (name) VALUES (?)", [newDpartment], (err, data) => {
                 if (err) {
                     console.log('error');
-                } else {      
-                    
-                    console.log(`A new Department '${newDpartment}' was successfully created.`);                 
-                 
+                } else {
+
+                    console.log(`A new Department '${newDpartment}' was successfully created.`);
                 }
             })
             init();
         })
-        .catch(err => console.log(err));
 };
 
 const addRole = (result) => {
-   
+
     prompt([
         {
             type: 'input',
@@ -110,16 +106,15 @@ const addRole = (result) => {
 
     ])
         .then((data) => {
-         
+
             db.query(`INSERT INTO roles (title, salary, viewDepartment_id) VALUES ('${data.title}', '${data.salary}', 
             (SELECT id FROM viewDepartments WHERE name = '${data.department}'))`, (err) => {
 
                 if (err) {
                     console.log('error');
-                } 
+                }
                 init();
             })
-
         })
 };
 
