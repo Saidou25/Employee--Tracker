@@ -42,6 +42,9 @@ const init = () => {
             else if (answer.init === 'Add a Role') {
                 addRole();
             }
+            else if (answer.init === 'Add an Employee') {
+                addEmployee();
+            }
 
         })
         .catch(err => console.log(err));
@@ -88,7 +91,6 @@ const addRole = (result) => {
     prompt([
         {
             type: 'input',
-
             message: 'What is the title of the role you would like to add ?',
             name: 'title',
         },
@@ -118,8 +120,61 @@ const addRole = (result) => {
         })
 };
 
+const addEmployee = () => {
+
+    prompt([
+        {
+            type: 'input',
+            message: 'Please enter the full name of the employee you would like to add ?',
+            name: 'fullName',
+        },
+        {
+            type: 'list',
+            message: 'What is the Department of the employee you are looking to add ?',
+            choices: ['Finance', 'Engineering', 'Legal'],
+            name: 'department',
+        },
+        {
+            type: 'list',
+            message: 'What is the Role of the employee you are looking to add ?',
+            choices: ['Lead Engineering', 'Software Engineer', 'Account Manageer', 'Acountant', 'Legal Team Lead', 'Lawyer'],
+            name: 'role',
+        },
+        {
+            type: 'input',
+            message: 'What is the salary of the employee you are looking to add ?',
+            name: 'salary',
+        },
+        {
+            type: 'list',
+            message: 'What is the Manager s firs_name  the last_name of the employee you are looking to add ?',
+            choices: ['Ashley Rodriguez', 'Kevin Tupik', 'Nalia Brown', 'Lara Lourd', 'Tom Allen', 'Alice Joke'],
+            name: 'manager',
+        },
+    ])
+        .then((data) => {
+            const name = data.fullName.split(" ");
+            const managerName = data.manager.split(" ");
+            // const manager_id = 2;
+            console.log(managerName[0]);
+            console.log(managerName[1]);
+
+            db.query(
+                `INSERT INTO employees (first_name, last_name, viewDepartment_id, role_id, manager_id)
+                 VALUES 
+                 ('${name[0]}', '${name[1]}', 
+                 (SELECT id FROM viewDepartments WHERE name = '${data.department}'), 
+                 (SELECT id FROM roles WHERE title = '${data.role}'), 
+                 (SELECT * FROM (SELECT manager_id FROM employees WHERE first_name = '${managerName[0]}' AND last_name = '${managerName[1]}')tblTmp))`, (err) => {
+
+                if (err) return console.error(err);
+            }
+            )
+            init();
+
+        })
+};
+
 init();
-
-
 
 

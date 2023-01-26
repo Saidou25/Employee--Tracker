@@ -11,7 +11,7 @@ INSERT INTO
         viewDepartment_id
     )
 VALUES ('Lead Engineering', 150000, 1), ('Software Engineer', 120000, 1),
- ('Account Manageer', 160000, 2), ('Acountant', 12500, 2), ('Legal' 'Team Lead', 250000, 3), ('Lawyer', 190000, 4);
+ ('Account Manageer', 160000, 2), ('Acountant', 12500, 2), ('Legal Team Lead', 250000, 3), ('Lawyer', 190000, 4);
 
 INSERT INTO
     employees (
@@ -20,7 +20,8 @@ INSERT INTO
         role_id,
         manager_id
     )
-VALUES ('Ashley', 'Rodriguez', 3, 2), 
+VALUES 
+('Ashley', 'Rodriguez', 3, 2), 
 ('Kevin', 'Tupik', 2, 4), 
 ('Kunal', 'Sigh', 3, null), 
 ('Nalia', 'Brown', 4, 5), 
