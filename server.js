@@ -45,6 +45,9 @@ const init = () => {
             else if (answer.init === 'Add an Employee') {
                 addEmployee();
             }
+            else if (answer.init === 'Update an Employee Role') {
+                updateEmployee();
+            }
 
         })
         .catch(err => console.log(err));
@@ -137,7 +140,7 @@ const addEmployee = () => {
         {
             type: 'list',
             message: 'What is the Role of the employee you are looking to add ?',
-            choices: ['Lead Engineering', 'Software Engineer', 'Account Manageer', 'Acountant', 'Legal Team Lead', 'Lawyer'],
+            choices: ['Lead Engineering', 'Software Engineer', 'Account Manager', 'Acountant', 'Legal Team Lead', 'Lawyer'],
             name: 'role',
         },
         {
@@ -155,10 +158,7 @@ const addEmployee = () => {
         .then((data) => {
             const name = data.fullName.split(" ");
             const managerName = data.manager.split(" ");
-            // const manager_id = 2;
-            console.log(managerName[0]);
-            console.log(managerName[1]);
-
+         
             db.query(
                 `INSERT INTO employees (first_name, last_name, viewDepartment_id, role_id, manager_id)
                  VALUES 
@@ -171,10 +171,40 @@ const addEmployee = () => {
             }
             )
             init();
+        })
+};
 
+const updateEmployee = () => {
+
+    prompt([
+        {
+            type: 'list',
+            message: 'Which Employee woulk you like to update ?',
+            choices: ['Ashley Rodriguez', 'Kevin Tupik', 'Nalia Brown', 'Lara Lourd', 'Tom Allen', 'Alice Joke'],
+            name: 'employeeName',
+        }, {
+            type: 'list',
+            message: 'Which role would you like to assigh to this employee ?',
+            choices: ['Lead Engineering', 'Software Engineer', 'Account Manager', 'Acountant', 'Legal Team Lead', 'Lawyer'],
+            name: 'employeeRole',
+        },
+    ])
+        .then((data) => {
+            const name = data.employeeName.split(" ");
+            const title = data.employeeRole;
+            console.log(name[0]);
+            console.log(name[1]);
+            console.log(title);
+
+            db.query(
+                `UPDATE employees SET role_id = (SELECT id FROM roles WHERE title = '${title}') WHERE id = (SELECT id FROM (SELECT id FROM employees WHERE first_name = '${name[0]}' AND last_name = '${name[1]}')tblTmp)`, (err) => {
+
+                    if (err) return console.error(err);
+                })
+            console.log('success');
+            init();
         })
 };
 
 init();
-
 
