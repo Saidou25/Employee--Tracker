@@ -11,7 +11,7 @@ INSERT INTO
         viewDepartment_id
     )
 VALUES ('Lead Engineering', 150000, 1), ('Software Engineer', 120000, 1),
- ('Account Manager', 160000, 2), ('Acountant', 12500, 2), ('Legal Team Lead', 250000, 3), ('Lawyer', 190000, 4);
+ ('Account Manager', 160000, 2), ('Acountant', 12500, 2), ('Legal Team Lead', 250000, 3), ('Lawyer', 190000, 3), ('Sales Representant', 70000, 4);
 
 INSERT INTO
     employees (

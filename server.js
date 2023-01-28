@@ -25,30 +25,29 @@ const init = () => {
                 showTables(result);
 
             }
-            else if (answer.init.includes('Roles')) {
+            if (answer.init.includes('Roles')) {
                 let result = 'Roles';
                 showTables(result);
 
             }
-            else if (answer.init.includes('Employees')) {
+            if (answer.init.includes('Employees')) {
                 let result = 'Employees';
                 showTables(result);
 
             }
-            else if (answer.init === 'Add a Department') {
+            if (answer.init === 'Add a Department') {
                 let result = 'viewDepartments';
                 addDepartment(result);
             }
-            else if (answer.init === 'Add a Role') {
+            if (answer.init === 'Add a Role') {
                 addRole();
             }
-            else if (answer.init === 'Add an Employee') {
+            if (answer.init === 'Add an Employee') {
                 addEmployee();
             }
-            else if (answer.init === 'Update an Employee Role') {
+            if (answer.init === 'Update an Employee Role') {
                 updateEmployee();
             }
-
         })
         .catch(err => console.log(err));
 };
@@ -60,8 +59,6 @@ const showTables = (result) => {
         init();
     });
 };
-
-let depChoices = [];
 
 const addDepartment = (result) => {
 
@@ -75,16 +72,16 @@ const addDepartment = (result) => {
         .then((data) => {
 
             const newDpartment = data.department;
-            const addD = depChoices.push(newDpartment);
 
             db.query("INSERT INTO viewDepartments (name) VALUES (?)", [newDpartment], (err, data) => {
                 if (err) {
-                    console.log('error');
+                    console.error(err);
                 } else {
 
                     console.log(`A new Department '${newDpartment}' was successfully created.`);
                 }
             })
+
             init();
         })
 };
@@ -118,6 +115,7 @@ const addRole = (result) => {
                 if (err) {
                     console.log('error');
                 }
+                console.log(`A new Job title "'${data.department}'" was successfully crated`);
                 init();
             })
         })
@@ -134,12 +132,12 @@ const addEmployee = () => {
         {
             type: 'list',
             message: 'What is the Department of the employee you are looking to add ?',
-            choices: ['Finance', 'Engineering', 'Legal'],
+            choices: ['Finance', 'Engineering', 'Legal', 'Sales'],
             name: 'department',
         },
         {
             type: 'list',
-            message: 'What is the Role of the employee you are looking to add ?',
+            message: 'What is the Role of the employee you would like to add ?',
             choices: ['Lead Engineering', 'Software Engineer', 'Account Manager', 'Acountant', 'Legal Team Lead', 'Lawyer'],
             name: 'role',
         },
@@ -150,7 +148,7 @@ const addEmployee = () => {
         },
         {
             type: 'list',
-            message: 'What is the Manager s firs_name  the last_name of the employee you are looking to add ?',
+            message: 'What is the Manager s full name of the employee you are looking to add ?',
             choices: ['Ashley Rodriguez', 'Kevin Tupik', 'Nalia Brown', 'Lara Lourd', 'Tom Allen', 'Alice Joke'],
             name: 'manager',
         },
@@ -158,7 +156,7 @@ const addEmployee = () => {
         .then((data) => {
             const name = data.fullName.split(" ");
             const managerName = data.manager.split(" ");
-         
+
             db.query(
                 `INSERT INTO employees (first_name, last_name, viewDepartment_id, role_id, manager_id)
                  VALUES 
@@ -168,8 +166,8 @@ const addEmployee = () => {
                  (SELECT * FROM (SELECT manager_id FROM employees WHERE first_name = '${managerName[0]}' AND last_name = '${managerName[1]}')tblTmp))`, (err) => {
 
                 if (err) return console.error(err);
-            }
-            )
+            })
+            console.log(`A new Employee "'${data.manager}'" was successfully created`);
             init();
         })
 };
@@ -192,16 +190,15 @@ const updateEmployee = () => {
         .then((data) => {
             const name = data.employeeName.split(" ");
             const title = data.employeeRole;
-            console.log(name[0]);
-            console.log(name[1]);
-            console.log(title);
 
             db.query(
-                `UPDATE employees SET role_id = (SELECT id FROM roles WHERE title = '${title}') WHERE id = (SELECT id FROM (SELECT id FROM employees WHERE first_name = '${name[0]}' AND last_name = '${name[1]}')tblTmp)`, (err) => {
+                `UPDATE employees SET role_id = (SELECT id FROM roles WHERE title = '${title}') 
+                WHERE id = (SELECT id FROM (SELECT id FROM employees WHERE first_name = '${name[0]}' 
+                AND last_name = '${name[1]}')tblTmp)`, (err) => {
 
-                    if (err) return console.error(err);
-                })
-            console.log('success');
+                if (err) return console.error(err);
+            })
+            console.log(`'${data.employeeName}' position was updated to "'${title}'".`);
             init();
         })
 };
