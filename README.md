@@ -18,7 +18,6 @@ this content management systems allows users to view and manage datas.
 - [Technologies](#technologies)
 - [Visuals](#visuals)
 - [License](#license)
-- [Contributing](#contributing)
 - [Tests](#tests)
 - [Questions](#questions)
 
